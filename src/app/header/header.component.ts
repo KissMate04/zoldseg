@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'; 
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [ReactiveFormsModule, CommonModule,
-    MatFormFieldModule, MatToolbarModule,MatIconModule,ProductCartComponent,MatButtonModule],
+    MatFormFieldModule,RouterLink, MatToolbarModule,MatIconModule,ProductCartComponent,MatButtonModule],
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss']
 })
@@ -39,6 +40,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this.router.navigate(['/kezdolap']); 
+    this.router.navigate(['/termekek']); 
   }
 }
