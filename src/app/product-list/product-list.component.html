@@ -1,0 +1,51 @@
+<div class="product-list-container">
+    <h2>Termékeink</h2>
+  
+    <div class="filters-sorting">
+      <mat-form-field appearance="fill">
+        <mat-label>Kategória</mat-label>
+        <mat-select (selectionChange)="applyFilters()" [(ngModel)]="selectedCategory">
+          <mat-option value="all">Összes</mat-option>
+          <mat-option value="zoldseg">Zöldség</mat-option>
+          <mat-option value="gyumolcs">Gyümölcs</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+          <mat-label>Max Ár (Ft/egység)</mat-label>
+          <input matInput type="number" [(ngModel)]="maxPrice" (input)="applyFilters()" placeholder="pl. 2000">
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+          <mat-label>Minőség</mat-label>
+          <mat-select (selectionChange)="applyFilters()" [(ngModel)]="selectedRating">
+              <mat-option value="all">Összes</mat-option>
+              <mat-option value="1">1. osztály</mat-option>
+              <mat-option value="2">2. osztály</mat-option>
+              </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Rendezés</mat-label>
+        <mat-select (selectionChange)="applySorting()" [(ngModel)]="sortBy">
+          <mat-option value="nameAsc">Név (A-Z)</mat-option>
+          <mat-option value="nameDesc">Név (Z-A)</mat-option>
+          <mat-option value="priceAsc">Ár (növekvő)</mat-option>
+          <mat-option value="priceDesc">Ár (csökkenő)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <div class="product-grid" *ngIf="filteredAndSortedProducts.length > 0; else noProducts">
+      <app-product-item 
+        *ngFor="let product of filteredAndSortedProducts" 
+        [product]="product">
+        (addToCartClicked)="handleAddToCart($event)">  
+      </app-product-item>
+    </div>
+  
+    <ng-template #noProducts>
+      <p class="no-products-message">Nincsenek a szűrési feltételeknek megfelelő termékek.</p>
+    </ng-template>
+  
+  </div>

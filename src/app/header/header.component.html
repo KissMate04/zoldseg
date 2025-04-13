@@ -1,0 +1,26 @@
+<mat-toolbar color="primary" class="app-header">
+    <div class="header-content">
+      <div class="website-name">
+        <span>Zöldség és gyümölcs rendelő és kiszállító oldal</span> 
+      </div>
+  
+      <nav class="navigation-links">
+        <a mat-button routerLink="/kezdolap">Kezdőlap</a>
+        <a mat-button routerLink="/termekek">Termékek</a>
+        <a mat-button routerLink="/kapcsolat">Kapcsolat</a>
+  
+        <a mat-button routerLink="/bejelentkezes" *ngIf="!isUserLoggedIn">Bejelentkezés</a>
+  
+        <a mat-button routerLink="/fiok" *ngIf="isUserLoggedIn">Fiók</a>
+        <button mat-button (click)="logout()" *ngIf="isUserLoggedIn">Kijelentkezés</button>
+  
+        <button mat-icon-button class="cart-button" (click)="toggleCartDropdown()">
+          <mat-icon>shopping_cart</mat-icon>
+          <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span> 
+        </button>
+      </nav>
+    </div>
+  
+    <app-product-cart *ngIf="isCartOpen" class="cart-dropdown-container"></app-product-cart> 
+  
+  </mat-toolbar>

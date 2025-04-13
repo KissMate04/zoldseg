@@ -1,0 +1,87 @@
+<div class="checkout-container">
+    <h2>Pénztár</h2>
+  
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
+  
+      <fieldset class="contact-info">
+          <legend>Kapcsolattartási adatok</legend>
+          <mat-form-field appearance="fill">
+              <mat-label>Telefonszám</mat-label>
+              <input matInput type="tel" formControlName="phone" placeholder="Pl. +36 30 123 4567" required>
+              <mat-error *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched">
+                  Kérjük, adja meg érvényes telefonszámát!
+              </mat-error>
+          </mat-form-field>
+      </fieldset>
+  
+      <fieldset formGroupName="address" class="shipping-address">
+          <legend>Szállítási Cím</legend>
+          <mat-form-field appearance="fill">
+               <mat-label>Ország</mat-label>
+               <input matInput type="text" formControlName="country" required>
+               <mat-error *ngIf="checkoutForm.get('address.country')?.invalid && checkoutForm.get('address.country')?.touched">
+                   Az ország megadása kötelező.
+               </mat-error>
+           </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Irányítószám</mat-label>
+            <input matInput type="text" formControlName="zipCode" required>
+            <mat-error *ngIf="checkoutForm.get('address.zipCode')?.invalid && checkoutForm.get('address.zipCode')?.touched">
+              Az irányítószám megadása kötelező.
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Város</mat-label>
+            <input matInput type="text" formControlName="city" required>
+             <mat-error *ngIf="checkoutForm.get('address.city')?.invalid && checkoutForm.get('address.city')?.touched">
+                  A város megadása kötelező.
+              </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Utca</mat-label>
+            <input matInput type="text" formControlName="street" required>
+            <mat-error *ngIf="checkoutForm.get('address.street')?.invalid && checkoutForm.get('address.street')?.touched">
+                  Az utca megadása kötelező.
+              </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Házszám</mat-label>
+            <input matInput type="text" formControlName="houseNumber" required>
+            <mat-error *ngIf="checkoutForm.get('address.houseNumber')?.invalid && checkoutForm.get('address.houseNumber')?.touched">
+                  A házszám megadása kötelező.
+              </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>Egyéb</mat-label>
+            <input matInput type="text" formControlName="other">
+          </mat-form-field>
+      </fieldset>
+  
+      <div class="order-summary">
+        <h3>Rendelés összesítése</h3>
+        <div class="summary-item">
+          <span>Végösszeg:</span>
+          <strong>{{ finalTotal }} Ft</strong> 
+          </div>
+        <div class="summary-item">
+          <span>Várható szállítási idő:</span>
+          <strong>{{ expectedDeliveryTime }}</strong> 
+          </div>
+      </div>
+  
+      <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          class="submit-button"
+          [disabled]="checkoutForm.invalid"> 
+        Fizetés és Megrendelés
+      </button>
+  
+    </form>
+  </div>

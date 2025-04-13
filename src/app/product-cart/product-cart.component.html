@@ -1,0 +1,39 @@
+<div class="cart-dropdown">
+    <h3 class="cart-title">Kosár tartalma</h3>
+  
+    <div class="cart-items" *ngIf="cartItems.length > 0; else emptyCart">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <img [src]="item.product.imageUrl" [alt]="item.product.name" class="item-image">
+        <div class="item-details">
+          <span class="item-name">{{ item.product.name }}</span>
+          <span class="item-subtotal">{{ (item.product.price * item.quantity) | number:'1.0-0' }} Ft</span>
+        </div>
+        <div class="item-quantity">
+          <button mat-icon-button (click)="decreaseQuantity(item)" [disabled]="item.quantity <= 1">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <input type="number" [value]="item.quantity" min="1" [max]="item.product.stock" (change)="updateQuantity(item, $event)" class="quantity-input">
+          <button mat-icon-button (click)="increaseQuantity(item)" [disabled]="item.quantity >= item.product.stock">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <button mat-icon-button color="warn" (click)="removeFromCart(item)" class="remove-button">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </div>
+    </div>
+  
+    <ng-template #emptyCart>
+      <p class="empty-cart-message">A kosarad jelenleg üres.</p>
+    </ng-template>
+  
+    <div class="cart-summary" *ngIf="cartItems.length > 0">
+      <div class="total-price">
+        <span>Végösszeg:</span>
+        <strong>{{ getTotalPrice() | number:'1.0-0' }} Ft</strong>
+      </div>
+      <button mat-flat-button color="primary" class="checkout-button" (click)="navigateToCheckout()">
+        Tovább a pénztárhoz
+      </button>
+    </div>
+  </div>
