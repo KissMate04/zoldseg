@@ -24,13 +24,18 @@
           </mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-          Bejelentkezés
+        <div class="form-error" *ngIf="loginError">
+          {{ loginError }}
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Bejelentkezés</span>
+          <span *ngIf="isLoading">Bejelentkezés...</span>
         </button>
       </form>
     </mat-card-content>
     <mat-card-actions>
-        <a routerLink="/regisztracio">Nincs még fiókod? Regisztrálj itt!</a>
+      <a routerLink="/regisztracio">Nincs még fiókod? Regisztrálj itt!</a>
     </mat-card-actions>
   </mat-card>
 </div>

@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -25,11 +26,14 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  isLoading = false;
+  loginError = '';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -41,17 +45,28 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.loginError = '';
+      
       const { email, password } = this.loginForm.value;
-      if (this.authService.login(email, password)) {
-        this.router.navigate(['/termekek']); // Navigate to products page on successful login
-      } else {
-        // Handle login failure (e.g., show an error message)
-        console.error('Login failed: Invalid email or password');
-        // You could add a property to show an error message in the template
-        // For example: this.loginError = 'Hibás email cím vagy jelszó.';
-        // And in the HTML: <mat-error *ngIf="loginError">{{ loginError }}</mat-error>
-        alert('Hibás email cím vagy jelszó!'); // Simple alert for now
-      }
+      
+      this.authService.login(email, password).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.snackBar.open('Sikeres bejelentkezés!', 'Bezár', {
+            duration: 3000
+          });
+          this.router.navigate(['/termekek']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.loginError = error.message || 'Hibás email cím vagy jelszó!';
+          this.snackBar.open(this.loginError, 'Bezár', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
     }
   }
 }

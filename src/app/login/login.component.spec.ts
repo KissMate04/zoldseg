@@ -12,10 +12,12 @@ import { of } from 'rxjs';
 class MockAuthService {
   isLoggedIn$ = of(false);
   login(email: string, pass: string) { 
+    // Simulate Firebase UserCredential object
     if (email === 'test@example.com' && pass === 'password') {
-      return true;
+      return of({ user: { email } } as any);
     }
-    return false; 
+    // Simulate failed login by throwing error or returning observable of null/undefined
+    return of(null);
   }
   logout() {}
   isAuthenticated() { return false; }
@@ -79,16 +81,16 @@ describe('LoginComponent', () => {
 
   it('form should be invalid when fields are empty', () => {
     expect(component.loginForm.invalid).toBeTruthy();
-  });
-
   it('should call authService.login and navigate on valid form submission', () => {
-    spyOn(authService, 'login').and.returnValue(true);
+    spyOn(authService, 'login').and.returnValue(of({ user: { email: 'test@example.com' } } as any));
     spyOn(router, 'navigate');
 
     component.loginForm.setValue({ email: 'test@example.com', password: 'password' });
     component.onSubmit();
 
     expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password');
+    expect(router.navigate).toHaveBeenCalledWith(['/termekek']);
+  });
     expect(router.navigate).toHaveBeenCalledWith(['/termekek']);
   });
 
@@ -101,10 +103,8 @@ describe('LoginComponent', () => {
 
     expect(authService.login).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
-  });
-
   it('should show alert and not navigate on failed login', () => {
-    spyOn(authService, 'login').and.returnValue(false);
+    spyOn(authService, 'login').and.returnValue(of({} as any));
     spyOn(router, 'navigate');
     spyOn(window, 'alert'); // Spy on window.alert
 
@@ -113,6 +113,8 @@ describe('LoginComponent', () => {
 
     expect(authService.login).toHaveBeenCalledWith('wrong@example.com', 'wrongpassword');
     expect(window.alert).toHaveBeenCalledWith('Hibás email cím vagy jelszó!');
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
     expect(router.navigate).not.toHaveBeenCalled();
   });
 });
