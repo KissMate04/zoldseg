@@ -1,1 +1,36 @@
-<p>login works!</p>
+<div class="login-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Bejelentkezés</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="pl. pat@example.com" required>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+            Email cím megadása kötelező.
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+            Érvénytelen email formátum.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Jelszó</mat-label>
+          <input matInput formControlName="password" type="password" required>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Jelszó megadása kötelező.
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+          Bejelentkezés
+        </button>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <a routerLink="/regisztracio">Nincs még fiókod? Regisztrálj itt!</a>
+    </mat-card-actions>
+  </mat-card>
+</div>

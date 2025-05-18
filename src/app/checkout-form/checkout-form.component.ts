@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../auth.service'; // Import AuthService
 
 @Component({
   selector: 'app-checkout-form',
@@ -26,6 +27,7 @@ export class CheckoutFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private authService: AuthService // Inject AuthService
   ) {}
 
   ngOnInit(): void {
